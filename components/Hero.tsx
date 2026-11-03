@@ -1,7 +1,27 @@
+'use client';
+import { useState } from 'react';
 import Link from 'next/link';
-import { ArrowUpRight, Plane, ChevronDown } from 'lucide-react';
+import { ArrowUpRight, Plane, ChevronDown, Check } from 'lucide-react';
+
+const destinations = ["Anywhere in India", "Kashmir", "Kerala", "Rajasthan", "Goa", "Himachal", "Andaman", "Leh Ladakh", "Varanasi"];
+const months = ["Flexible dates", "January - March", "April - June", "July - September", "October - December"];
+const travelerOptions = ["1 Traveler", "2 Travelers", "3-5 Travelers", "Family (6+ travelers)"];
+const travelStyles = ["All experiences", "Mountain favourite", "Slow travel", "Cultural classic", "Beach escape", "Spiritual", "Adventure"];
 
 export default function Hero() {
+  // State to manage which dropdown is open
+  const [activeDropdown, setActiveDropdown] = useState<string | null>(null);
+
+  // Selected values state
+  const [destination, setDestination] = useState("Anywhere in India");
+  const [month, setMonth] = useState("Flexible dates");
+  const [travelers, setTravelers] = useState("2 Travelers");
+  const [style, setStyle] = useState("All experiences");
+
+  const toggleDropdown = (name: string) => {
+    setActiveDropdown(activeDropdown === name ? null : name);
+  };
+
   return (
     <section className="relative w-full min-h-[70vh] lg:min-h-[65vh] flex flex-col justify-between bg-[#0b1329] overflow-visible py-8 sm:py-12 px-4 sm:px-8 lg:px-16 pb-36 sm:pb-32">
       
@@ -58,9 +78,9 @@ export default function Hero() {
 
       </div>
 
-      {/* Overlapping Search Bar - Fully Responsive for Mobile & Desktop */}
+      {/* Overlapping Search Bar with Functional Dropdowns */}
       <div className="absolute -bottom-20 sm:-bottom-24 lg:-bottom-26 left-4 right-4 sm:left-8 sm:right-8 z-30 max-w-[1400px] mx-auto">
-        <div className="bg-white text-gray-900 rounded-3xl p-4 sm:p-6 lg:p-8 shadow-[0_20px_50px_rgba(0,0,0,0.25)] border border-gray-100 flex flex-col gap-4 sm:gap-6">
+        <div className="bg-white text-gray-900 rounded-3xl p-4 sm:p-6 lg:p-8 shadow-[0_20px_50px_rgba(0,0,0,0.25)] border border-gray-100 flex flex-col gap-4 sm:gap-6 relative">
           
           {/* Top Header Row */}
           <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-1.5 sm:gap-2 border-b border-gray-100 pb-3">
@@ -74,55 +94,138 @@ export default function Hero() {
           </div>
 
           {/* Bottom Inputs Grid & Button Row */}
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-3 sm:gap-4 items-center">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-3 sm:gap-4 items-center relative">
             
-            {/* Field 1: Destination */}
-            <div className="border border-gray-200 hover:border-blue-500 rounded-2xl p-3 bg-white transition cursor-pointer shadow-sm">
-              <span className="block text-[10px] font-bold tracking-wider text-gray-400 uppercase mb-1">
-                YOUR DESTINATION
-              </span>
-              <div className="flex items-center justify-between text-xs sm:text-sm font-semibold text-gray-800">
-                <span>Anywhere in India</span>
-                <ChevronDown className="w-4 h-4 text-gray-400" />
+            {/* Field 1: Destination Dropdown */}
+            <div className="relative">
+              <div 
+                onClick={() => toggleDropdown('destination')}
+                className="border border-gray-200 hover:border-blue-500 rounded-2xl p-3 bg-white transition cursor-pointer shadow-sm select-none"
+              >
+                <span className="block text-[10px] font-bold tracking-wider text-gray-400 uppercase mb-1">
+                  YOUR DESTINATION
+                </span>
+                <div className="flex items-center justify-between text-xs sm:text-sm font-semibold text-gray-800">
+                  <span className="truncate">{destination}</span>
+                  <ChevronDown className={`w-4 h-4 text-gray-400 transition-transform ${activeDropdown === 'destination' ? 'rotate-180' : ''}`} />
+                </div>
               </div>
+
+              {activeDropdown === 'destination' && (
+                <div className="absolute top-full left-0 mt-2 w-full bg-white border border-gray-100 rounded-2xl shadow-2xl py-2 z-50 max-h-60 overflow-y-auto">
+                  {destinations.map((item) => (
+                    <div
+                      key={item}
+                      onClick={() => { setDestination(item); setActiveDropdown(null); }}
+                      className="px-4 py-2.5 text-xs sm:text-sm hover:bg-blue-50 hover:text-blue-600 cursor-pointer flex items-center justify-between transition"
+                    >
+                      <span>{item}</span>
+                      {destination === item && <Check className="w-4 h-4 text-blue-600" />}
+                    </div>
+                  ))}
+                </div>
+              )}
             </div>
 
-            {/* Field 2: Travel Month */}
-            <div className="border border-gray-200 hover:border-blue-500 rounded-2xl p-3 bg-white transition cursor-pointer shadow-sm">
-              <span className="block text-[10px] font-bold tracking-wider text-gray-400 uppercase mb-1">
-                TRAVEL MONTH
-              </span>
-              <div className="flex items-center justify-between text-xs sm:text-sm font-semibold text-gray-800">
-                <span>Flexible dates</span>
-                <ChevronDown className="w-4 h-4 text-gray-400" />
+            {/* Field 2: Travel Month Dropdown */}
+            <div className="relative">
+              <div 
+                onClick={() => toggleDropdown('month')}
+                className="border border-gray-200 hover:border-blue-500 rounded-2xl p-3 bg-white transition cursor-pointer shadow-sm select-none"
+              >
+                <span className="block text-[10px] font-bold tracking-wider text-gray-400 uppercase mb-1">
+                  TRAVEL MONTH
+                </span>
+                <div className="flex items-center justify-between text-xs sm:text-sm font-semibold text-gray-800">
+                  <span className="truncate">{month}</span>
+                  <ChevronDown className={`w-4 h-4 text-gray-400 transition-transform ${activeDropdown === 'month' ? 'rotate-180' : ''}`} />
+                </div>
               </div>
+
+              {activeDropdown === 'month' && (
+                <div className="absolute top-full left-0 mt-2 w-full bg-white border border-gray-100 rounded-2xl shadow-2xl py-2 z-50 max-h-60 overflow-y-auto">
+                  {months.map((item) => (
+                    <div
+                      key={item}
+                      onClick={() => { setMonth(item); setActiveDropdown(null); }}
+                      className="px-4 py-2.5 text-xs sm:text-sm hover:bg-blue-50 hover:text-blue-600 cursor-pointer flex items-center justify-between transition"
+                    >
+                      <span>{item}</span>
+                      {month === item && <Check className="w-4 h-4 text-blue-600" />}
+                    </div>
+                  ))}
+                </div>
+              )}
             </div>
 
-            {/* Field 3: Travelers */}
-            <div className="border border-gray-200 hover:border-blue-500 rounded-2xl p-3 bg-white transition cursor-pointer shadow-sm">
-              <span className="block text-[10px] font-bold tracking-wider text-gray-400 uppercase mb-1">
-                TRAVELERS
-              </span>
-              <div className="flex items-center justify-between text-xs sm:text-sm font-semibold text-gray-800">
-                <span>2 Travelers</span>
-                <ChevronDown className="w-4 h-4 text-gray-400" />
+            {/* Field 3: Travelers Dropdown */}
+            <div className="relative">
+              <div 
+                onClick={() => toggleDropdown('travelers')}
+                className="border border-gray-200 hover:border-blue-500 rounded-2xl p-3 bg-white transition cursor-pointer shadow-sm select-none"
+              >
+                <span className="block text-[10px] font-bold tracking-wider text-gray-400 uppercase mb-1">
+                  TRAVELERS
+                </span>
+                <div className="flex items-center justify-between text-xs sm:text-sm font-semibold text-gray-800">
+                  <span className="truncate">{travelers}</span>
+                  <ChevronDown className={`w-4 h-4 text-gray-400 transition-transform ${activeDropdown === 'travelers' ? 'rotate-180' : ''}`} />
+                </div>
               </div>
+
+              {activeDropdown === 'travelers' && (
+                <div className="absolute top-full left-0 mt-2 w-full bg-white border border-gray-100 rounded-2xl shadow-2xl py-2 z-50 max-h-60 overflow-y-auto">
+                  {travelerOptions.map((item) => (
+                    <div
+                      key={item}
+                      onClick={() => { setTravelers(item); setActiveDropdown(null); }}
+                      className="px-4 py-2.5 text-xs sm:text-sm hover:bg-blue-50 hover:text-blue-600 cursor-pointer flex items-center justify-between transition"
+                    >
+                      <span>{item}</span>
+                      {travelers === item && <Check className="w-4 h-4 text-blue-600" />}
+                    </div>
+                  ))}
+                </div>
+              )}
             </div>
 
-            {/* Field 4: Travel Style */}
-            <div className="border border-gray-200 hover:border-blue-500 rounded-2xl p-3 bg-white transition cursor-pointer shadow-sm">
-              <span className="block text-[10px] font-bold tracking-wider text-gray-400 uppercase mb-1">
-                TRAVEL STYLE
-              </span>
-              <div className="flex items-center justify-between text-xs sm:text-sm font-semibold text-gray-800">
-                <span>All experiences</span>
-                <ChevronDown className="w-4 h-4 text-gray-400" />
+            {/* Field 4: Travel Style Dropdown */}
+            <div className="relative">
+              <div 
+                onClick={() => toggleDropdown('style')}
+                className="border border-gray-200 hover:border-blue-500 rounded-2xl p-3 bg-white transition cursor-pointer shadow-sm select-none"
+              >
+                <span className="block text-[10px] font-bold tracking-wider text-gray-400 uppercase mb-1">
+                  TRAVEL STYLE
+                </span>
+                <div className="flex items-center justify-between text-xs sm:text-sm font-semibold text-gray-800">
+                  <span className="truncate">{style}</span>
+                  <ChevronDown className={`w-4 h-4 text-gray-400 transition-transform ${activeDropdown === 'style' ? 'rotate-180' : ''}`} />
+                </div>
               </div>
+
+              {activeDropdown === 'style' && (
+                <div className="absolute top-full left-0 mt-2 w-full bg-white border border-gray-100 rounded-2xl shadow-2xl py-2 z-50 max-h-60 overflow-y-auto">
+                  {travelStyles.map((item) => (
+                    <div
+                      key={item}
+                      onClick={() => { setStyle(item); setActiveDropdown(null); }}
+                      className="px-4 py-2.5 text-xs sm:text-sm hover:bg-blue-50 hover:text-blue-600 cursor-pointer flex items-center justify-between transition"
+                    >
+                      <span>{item}</span>
+                      {style === item && <Check className="w-4 h-4 text-blue-600" />}
+                    </div>
+                  ))}
+                </div>
+              )}
             </div>
 
             {/* Explore Button */}
             <div className="h-full flex items-center">
-              <button className="w-full h-12 sm:h-full bg-[#1b73e8] hover:bg-blue-600 text-white font-semibold px-6 py-3.5 sm:py-4 rounded-2xl transition-all shadow-md shadow-blue-500/20 flex items-center justify-center gap-2 text-sm sm:text-base">
+              <button 
+                onClick={() => alert(`Searching trips for: ${destination}, ${month}, ${travelers}, ${style}`)}
+                className="w-full h-12 sm:h-full bg-[#1b73e8] hover:bg-blue-600 text-white font-semibold px-6 py-3.5 sm:py-4 rounded-2xl transition-all shadow-md shadow-blue-500/20 flex items-center justify-center gap-2 text-sm sm:text-base cursor-pointer"
+              >
                 Explore Trips <ArrowUpRight className="w-4 h-4" />
               </button>
             </div>
