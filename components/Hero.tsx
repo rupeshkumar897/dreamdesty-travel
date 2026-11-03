@@ -1,7 +1,7 @@
 'use client';
 import { useState } from 'react';
 import Link from 'next/link';
-import { ArrowUpRight, Plane, ChevronDown, Check } from 'lucide-react';
+import { ArrowUpRight, Plane, ChevronDown, Check, X } from 'lucide-react';
 
 const destinations = ["Anywhere in India", "Kashmir", "Kerala", "Rajasthan", "Goa", "Himachal", "Andaman", "Leh Ladakh", "Varanasi"];
 const months = ["Flexible dates", "January - March", "April - June", "July - September", "October - December"];
@@ -9,10 +9,8 @@ const travelerOptions = ["1 Traveler", "2 Travelers", "3-5 Travelers", "Family (
 const travelStyles = ["All experiences", "Mountain favourite", "Slow travel", "Cultural classic", "Beach escape", "Spiritual", "Adventure"];
 
 export default function Hero() {
-  // State to manage which dropdown is open
   const [activeDropdown, setActiveDropdown] = useState<string | null>(null);
 
-  // Selected values state
   const [destination, setDestination] = useState("Anywhere in India");
   const [month, setMonth] = useState("Flexible dates");
   const [travelers, setTravelers] = useState("2 Travelers");
@@ -23,7 +21,7 @@ export default function Hero() {
   };
 
   return (
-    <section className="relative w-full min-h-[70vh] lg:min-h-[65vh] flex flex-col justify-between bg-[#0b1329] overflow-visible py-8 sm:py-12 px-4 sm:px-8 lg:px-16 pb-36 sm:pb-32">
+    <section className="relative w-full min-h-[70vh] lg:min-h-[65vh] flex flex-col justify-between bg-[#0b1329] overflow-visible py-8 sm:py-12 px-4 sm:px-8 lg:px-16 pb-40 sm:pb-32">
       
       {/* Background Image with Enhanced Blue-Gray Gradient Overlays */}
       <div className="absolute inset-0 z-0">
@@ -78,8 +76,16 @@ export default function Hero() {
 
       </div>
 
-      {/* Overlapping Search Bar with Functional Dropdowns */}
-      <div className="absolute -bottom-20 sm:-bottom-24 lg:-bottom-26 left-4 right-4 sm:left-8 sm:right-8 z-30 max-w-[1400px] mx-auto">
+      {/* Mobile Backdrop Overlay when any dropdown is open */}
+      {activeDropdown && (
+        <div 
+          onClick={() => setActiveDropdown(null)} 
+          className="fixed inset-0 bg-black/60 z-40 lg:hidden backdrop-blur-sm"
+        />
+      )}
+
+      {/* Overlapping Search Bar with Responsive Dropdowns */}
+      <div className="absolute -bottom-24 sm:-bottom-24 lg:-bottom-26 left-4 right-4 sm:left-8 sm:right-8 z-30 max-w-[1400px] mx-auto">
         <div className="bg-white text-gray-900 rounded-3xl p-4 sm:p-6 lg:p-8 shadow-[0_20px_50px_rgba(0,0,0,0.25)] border border-gray-100 flex flex-col gap-4 sm:gap-6 relative">
           
           {/* Top Header Row */}
@@ -112,12 +118,16 @@ export default function Hero() {
               </div>
 
               {activeDropdown === 'destination' && (
-                <div className="absolute top-full left-0 mt-2 w-full bg-white border border-gray-100 rounded-2xl shadow-2xl py-2 z-50 max-h-60 overflow-y-auto">
+                <div className="fixed lg:absolute inset-x-4 bottom-10 lg:inset-auto lg:top-full lg:left-0 lg:mt-2 lg:w-full bg-white border border-gray-100 rounded-3xl lg:rounded-2xl shadow-2xl py-4 px-3 z-50 max-h-[70vh] lg:max-h-60 overflow-y-auto">
+                  <div className="flex justify-between items-center px-2 pb-3 lg:hidden border-b border-gray-100 mb-2">
+                    <span className="font-bold text-xs text-gray-400 uppercase tracking-wider">Select Destination</span>
+                    <X className="w-5 h-5 text-gray-500 cursor-pointer" onClick={() => setActiveDropdown(null)} />
+                  </div>
                   {destinations.map((item) => (
                     <div
                       key={item}
                       onClick={() => { setDestination(item); setActiveDropdown(null); }}
-                      className="px-4 py-2.5 text-xs sm:text-sm hover:bg-blue-50 hover:text-blue-600 cursor-pointer flex items-center justify-between transition"
+                      className="px-4 py-3 lg:py-2.5 text-sm lg:text-xs sm:text-sm hover:bg-blue-50 hover:text-blue-600 cursor-pointer flex items-center justify-between rounded-xl transition"
                     >
                       <span>{item}</span>
                       {destination === item && <Check className="w-4 h-4 text-blue-600" />}
@@ -143,12 +153,16 @@ export default function Hero() {
               </div>
 
               {activeDropdown === 'month' && (
-                <div className="absolute top-full left-0 mt-2 w-full bg-white border border-gray-100 rounded-2xl shadow-2xl py-2 z-50 max-h-60 overflow-y-auto">
+                <div className="fixed lg:absolute inset-x-4 bottom-10 lg:inset-auto lg:top-full lg:left-0 lg:mt-2 lg:w-full bg-white border border-gray-100 rounded-3xl lg:rounded-2xl shadow-2xl py-4 px-3 z-50 max-h-[70vh] lg:max-h-60 overflow-y-auto">
+                  <div className="flex justify-between items-center px-2 pb-3 lg:hidden border-b border-gray-100 mb-2">
+                    <span className="font-bold text-xs text-gray-400 uppercase tracking-wider">Select Month</span>
+                    <X className="w-5 h-5 text-gray-500 cursor-pointer" onClick={() => setActiveDropdown(null)} />
+                  </div>
                   {months.map((item) => (
                     <div
                       key={item}
                       onClick={() => { setMonth(item); setActiveDropdown(null); }}
-                      className="px-4 py-2.5 text-xs sm:text-sm hover:bg-blue-50 hover:text-blue-600 cursor-pointer flex items-center justify-between transition"
+                      className="px-4 py-3 lg:py-2.5 text-sm lg:text-xs sm:text-sm hover:bg-blue-50 hover:text-blue-600 cursor-pointer flex items-center justify-between rounded-xl transition"
                     >
                       <span>{item}</span>
                       {month === item && <Check className="w-4 h-4 text-blue-600" />}
@@ -174,12 +188,16 @@ export default function Hero() {
               </div>
 
               {activeDropdown === 'travelers' && (
-                <div className="absolute top-full left-0 mt-2 w-full bg-white border border-gray-100 rounded-2xl shadow-2xl py-2 z-50 max-h-60 overflow-y-auto">
+                <div className="fixed lg:absolute inset-x-4 bottom-10 lg:inset-auto lg:top-full lg:left-0 lg:mt-2 lg:w-full bg-white border border-gray-100 rounded-3xl lg:rounded-2xl shadow-2xl py-4 px-3 z-50 max-h-[70vh] lg:max-h-60 overflow-y-auto">
+                  <div className="flex justify-between items-center px-2 pb-3 lg:hidden border-b border-gray-100 mb-2">
+                    <span className="font-bold text-xs text-gray-400 uppercase tracking-wider">Select Travelers</span>
+                    <X className="w-5 h-5 text-gray-500 cursor-pointer" onClick={() => setActiveDropdown(null)} />
+                  </div>
                   {travelerOptions.map((item) => (
                     <div
                       key={item}
                       onClick={() => { setTravelers(item); setActiveDropdown(null); }}
-                      className="px-4 py-2.5 text-xs sm:text-sm hover:bg-blue-50 hover:text-blue-600 cursor-pointer flex items-center justify-between transition"
+                      className="px-4 py-3 lg:py-2.5 text-sm lg:text-xs sm:text-sm hover:bg-blue-50 hover:text-blue-600 cursor-pointer flex items-center justify-between rounded-xl transition"
                     >
                       <span>{item}</span>
                       {travelers === item && <Check className="w-4 h-4 text-blue-600" />}
@@ -205,12 +223,16 @@ export default function Hero() {
               </div>
 
               {activeDropdown === 'style' && (
-                <div className="absolute top-full left-0 mt-2 w-full bg-white border border-gray-100 rounded-2xl shadow-2xl py-2 z-50 max-h-60 overflow-y-auto">
+                <div className="fixed lg:absolute inset-x-4 bottom-10 lg:inset-auto lg:top-full lg:left-0 lg:mt-2 lg:w-full bg-white border border-gray-100 rounded-3xl lg:rounded-2xl shadow-2xl py-4 px-3 z-50 max-h-[70vh] lg:max-h-60 overflow-y-auto">
+                  <div className="flex justify-between items-center px-2 pb-3 lg:hidden border-b border-gray-100 mb-2">
+                    <span className="font-bold text-xs text-gray-400 uppercase tracking-wider">Select Travel Style</span>
+                    <X className="w-5 h-5 text-gray-500 cursor-pointer" onClick={() => setActiveDropdown(null)} />
+                  </div>
                   {travelStyles.map((item) => (
                     <div
                       key={item}
                       onClick={() => { setStyle(item); setActiveDropdown(null); }}
-                      className="px-4 py-2.5 text-xs sm:text-sm hover:bg-blue-50 hover:text-blue-600 cursor-pointer flex items-center justify-between transition"
+                      className="px-4 py-3 lg:py-2.5 text-sm lg:text-xs sm:text-sm hover:bg-blue-50 hover:text-blue-600 cursor-pointer flex items-center justify-between rounded-xl transition"
                     >
                       <span>{item}</span>
                       {style === item && <Check className="w-4 h-4 text-blue-600" />}
