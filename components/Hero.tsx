@@ -10,6 +10,7 @@ const travelStyles = ["All experiences", "Mountain favourite", "Slow travel", "C
 
 export default function Hero() {
   const [activeDropdown, setActiveDropdown] = useState<string | null>(null);
+  const [loading, setLoading] = useState(false);
 
   const [destination, setDestination] = useState("Anywhere in India");
   const [month, setMonth] = useState("Flexible dates");
@@ -20,46 +21,59 @@ export default function Hero() {
     setActiveDropdown(activeDropdown === name ? null : name);
   };
 
+  const handleSearch = async () => {
+    setLoading(true);
+    try {
+      // Background me backend API (/api/contact) ko quick search details email karne ke liye
+      await fetch('/api/contact', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ destination, month, travelers, style }),
+      });
+    } catch (err) {
+      console.error("Hero search log error:", err);
+    }
+
+    // User ko query params ke sath tours page par redirect kar dein
+    window.location.href = `/tours?destination=${encodeURIComponent(destination)}&style=${encodeURIComponent(style)}`;
+  };
+
   return (
-    <section className="relative w-full min-h-[70vh] lg:min-h-[65vh] flex flex-col justify-between bg-[#0b1329] overflow-visible py-8 sm:py-12 px-4 sm:px-8 lg:px-16 pb-40 sm:pb-32">
+    <section className="relative w-full flex flex-col justify-between bg-[#0b1329] overflow-visible py-10 sm:py-16 px-4 sm:px-8 lg:px-16 pb-24 lg:pb-36">
       
-      {/* Background Image with Enhanced Blue-Gray Gradient Overlays */}
+      {/* Background Image with Gradients */}
       <div className="absolute inset-0 z-0">
-        <div className="absolute inset-0 bg-gradient-to-r from-[#0b1329] via-[#0b1329]/90 to-[#0e1736]/60 z-10" />
-        <div className="absolute inset-0 bg-gradient-to-t from-[#0b1329] via-transparent to-[#0b1329]/70 z-10" />
+        <div className="absolute inset-0 bg-gradient-to-r from-[#0b1329] via-[#0b1329]/50 to-[#0e1736]/70 z-10" />
+        <div className="absolute inset-0 bg-gradient-to-t from-[#0b1329] via-transparent to-[#0b1329]/80 z-10" />
         <img 
           src="https://images.unsplash.com/photo-1570168007204-dfb528c6958f?q=80&w=1920&auto=format&fit=crop" 
-          alt="Gateway of India Banner" 
-          className="w-full h-full object-cover object-center filter brightness-[0.65]"
+          alt="India Travel Banner" 
+          className="w-full h-full object-cover object-center filter brightness-[0.6]"
         />
       </div>
 
-      {/* Hero Content Wrapper */}
-      <div className="relative z-20 max-w-[1400px] mx-auto w-full my-auto py-4 sm:py-6 flex flex-col items-start">
+      {/* Hero Content */}
+      <div className="relative z-20 max-w-[1400px] mx-auto w-full my-auto py-6 sm:py-10 flex flex-col items-start">
         
-        {/* Small Tagline */}
-        <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-white/5 border border-white/10 backdrop-blur-md mb-4 sm:mb-6 shadow-sm">
+        <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-white/5 border border-white/10 backdrop-blur-md mb-4 sm:mb-6 shadow-sm">
           <span className="w-2 h-2 rounded-full bg-amber-400 animate-pulse"></span>
           <span className="text-amber-400 text-[10px] sm:text-xs font-semibold tracking-widest uppercase">
             WELCOME TO THE MAGIC OF INDIA
           </span>
         </div>
 
-        {/* Main Headings */}
         <h1 className="text-3xl sm:text-5xl lg:text-7xl font-serif font-normal text-white tracking-tight max-w-4xl leading-[1.15] mb-4 sm:mb-5">
           One incredible India. <br />
           <span className="italic font-serif text-amber-400 font-light drop-shadow-md">Infinite journeys.</span>
         </h1>
 
-        {/* Description */}
-        <p className="text-gray-300 text-xs sm:text-sm lg:text-base max-w-xl font-light mb-6 sm:mb-8 leading-relaxed">
+        <p className="text-gray-300 text-xs sm:text-sm lg:text-base max-w-xl font-light mb-8 leading-relaxed">
           From the snowy valleys of Kashmir to Kerala’s tranquil backwaters, discover extraordinary places and thoughtfully designed journeys — all across India.
         </p>
 
-        {/* Action Buttons */}
-        <div className="flex flex-col sm:flex-row flex-wrap items-stretch sm:items-center gap-3 sm:gap-4 mb-4 w-full sm:w-auto">
+        <div className="flex flex-col sm:flex-row flex-wrap items-stretch sm:items-center gap-3 sm:gap-4 mb-8 w-full sm:w-auto">
           <Link 
-            href="#tours" 
+            href="/tours" 
             className="bg-amber-400 hover:bg-amber-300 text-gray-950 font-semibold px-6 sm:px-7 py-3.5 rounded-xl transition-all shadow-xl shadow-amber-400/20 flex items-center justify-center gap-2 text-sm sm:text-base group"
           >
             Explore India Tours 
@@ -67,7 +81,7 @@ export default function Hero() {
           </Link>
           
           <Link 
-            href="#destinations" 
+            href="/destinations" 
             className="bg-white/10 hover:bg-white/15 backdrop-blur-md text-white font-medium px-6 sm:px-7 py-3.5 rounded-xl transition-all border border-white/20 text-sm sm:text-base flex items-center justify-center gap-2 shadow-lg"
           >
             Discover Destinations →
@@ -76,19 +90,18 @@ export default function Hero() {
 
       </div>
 
-      {/* Mobile Backdrop Overlay when any dropdown is open */}
+      {/* Mobile Backdrop Overlay when dropdown is open */}
       {activeDropdown && (
         <div 
           onClick={() => setActiveDropdown(null)} 
-          className="fixed inset-0 bg-black/60 z-40 lg:hidden backdrop-blur-sm"
+          className="fixed inset-0 bg-black/70 z-40 lg:hidden backdrop-blur-sm transition-opacity"
         />
       )}
 
-      {/* Overlapping Search Bar with Responsive Dropdowns */}
-      <div className="absolute -bottom-24 sm:-bottom-24 lg:-bottom-26 left-4 right-4 sm:left-8 sm:right-8 z-30 max-w-[1400px] mx-auto">
-        <div className="bg-white text-gray-900 rounded-3xl p-4 sm:p-6 lg:p-8 shadow-[0_20px_50px_rgba(0,0,0,0.25)] border border-gray-100 flex flex-col gap-4 sm:gap-6 relative">
+      {/* Centered Search Bar Box */}
+      <div className="relative lg:absolute lg:-bottom-24 left-0 right-0 z-30 max-w-[1400px] mx-auto px-4 sm:px-8 lg:px-16 mt-6 lg:mt-0 flex justify-center">
+        <div className="bg-white text-gray-900 rounded-3xl p-4 sm:p-6 lg:p-8 shadow-[0_20px_50px_rgba(0,0,0,0.25)] border border-gray-100 flex flex-col gap-4 sm:gap-6 w-full relative">
           
-          {/* Top Header Row */}
           <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-1.5 sm:gap-2 border-b border-gray-100 pb-3">
             <div className="flex items-center gap-2 font-serif font-bold text-lg sm:text-xl lg:text-2xl text-[#0b1329]">
               <span>Where will India take you next?</span>
@@ -99,10 +112,9 @@ export default function Hero() {
             </span>
           </div>
 
-          {/* Bottom Inputs Grid & Button Row */}
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-3 sm:gap-4 items-center relative">
             
-            {/* Field 1: Destination Dropdown */}
+            {/* Field 1: Destination */}
             <div className="relative">
               <div 
                 onClick={() => toggleDropdown('destination')}
@@ -118,16 +130,16 @@ export default function Hero() {
               </div>
 
               {activeDropdown === 'destination' && (
-                <div className="fixed lg:absolute inset-x-4 bottom-10 lg:inset-auto lg:top-full lg:left-0 lg:mt-2 lg:w-full bg-white border border-gray-100 rounded-3xl lg:rounded-2xl shadow-2xl py-4 px-3 z-50 max-h-[70vh] lg:max-h-60 overflow-y-auto">
-                  <div className="flex justify-between items-center px-2 pb-3 lg:hidden border-b border-gray-100 mb-2">
-                    <span className="font-bold text-xs text-gray-400 uppercase tracking-wider">Select Destination</span>
-                    <X className="w-5 h-5 text-gray-500 cursor-pointer" onClick={() => setActiveDropdown(null)} />
+                <div className="fixed inset-x-0 bottom-0 lg:absolute lg:inset-auto lg:top-full lg:left-0 lg:mt-2 lg:w-full bg-white border-t lg:border border-gray-100 rounded-t-[30px] lg:rounded-2xl shadow-2xl py-6 px-4 z-50 max-h-[60vh] lg:max-h-60 overflow-y-auto">
+                  <div className="flex justify-between items-center pb-3 mb-2 lg:hidden border-b border-gray-100">
+                    <span className="font-bold text-xs text-gray-500 uppercase tracking-wider">Select Destination</span>
+                    <button onClick={() => setActiveDropdown(null)} className="p-1 rounded-full bg-gray-100"><X className="w-5 h-5 text-gray-600" /></button>
                   </div>
                   {destinations.map((item) => (
                     <div
                       key={item}
                       onClick={() => { setDestination(item); setActiveDropdown(null); }}
-                      className="px-4 py-3 lg:py-2.5 text-sm lg:text-xs sm:text-sm hover:bg-blue-50 hover:text-blue-600 cursor-pointer flex items-center justify-between rounded-xl transition"
+                      className="px-4 py-3.5 lg:py-2.5 text-sm hover:bg-blue-50 hover:text-blue-600 cursor-pointer flex items-center justify-between rounded-xl transition"
                     >
                       <span>{item}</span>
                       {destination === item && <Check className="w-4 h-4 text-blue-600" />}
@@ -137,7 +149,7 @@ export default function Hero() {
               )}
             </div>
 
-            {/* Field 2: Travel Month Dropdown */}
+            {/* Field 2: Month */}
             <div className="relative">
               <div 
                 onClick={() => toggleDropdown('month')}
@@ -153,16 +165,16 @@ export default function Hero() {
               </div>
 
               {activeDropdown === 'month' && (
-                <div className="fixed lg:absolute inset-x-4 bottom-10 lg:inset-auto lg:top-full lg:left-0 lg:mt-2 lg:w-full bg-white border border-gray-100 rounded-3xl lg:rounded-2xl shadow-2xl py-4 px-3 z-50 max-h-[70vh] lg:max-h-60 overflow-y-auto">
-                  <div className="flex justify-between items-center px-2 pb-3 lg:hidden border-b border-gray-100 mb-2">
-                    <span className="font-bold text-xs text-gray-400 uppercase tracking-wider">Select Month</span>
-                    <X className="w-5 h-5 text-gray-500 cursor-pointer" onClick={() => setActiveDropdown(null)} />
+                <div className="fixed inset-x-0 bottom-0 lg:absolute lg:inset-auto lg:top-full lg:left-0 lg:mt-2 lg:w-full bg-white border-t lg:border border-gray-100 rounded-t-[30px] lg:rounded-2xl shadow-2xl py-6 px-4 z-50 max-h-[60vh] lg:max-h-60 overflow-y-auto">
+                  <div className="flex justify-between items-center pb-3 mb-2 lg:hidden border-b border-gray-100">
+                    <span className="font-bold text-xs text-gray-500 uppercase tracking-wider">Select Month</span>
+                    <button onClick={() => setActiveDropdown(null)} className="p-1 rounded-full bg-gray-100"><X className="w-5 h-5 text-gray-600" /></button>
                   </div>
                   {months.map((item) => (
                     <div
                       key={item}
                       onClick={() => { setMonth(item); setActiveDropdown(null); }}
-                      className="px-4 py-3 lg:py-2.5 text-sm lg:text-xs sm:text-sm hover:bg-blue-50 hover:text-blue-600 cursor-pointer flex items-center justify-between rounded-xl transition"
+                      className="px-4 py-3.5 lg:py-2.5 text-sm hover:bg-blue-50 hover:text-blue-600 cursor-pointer flex items-center justify-between rounded-xl transition"
                     >
                       <span>{item}</span>
                       {month === item && <Check className="w-4 h-4 text-blue-600" />}
@@ -172,7 +184,7 @@ export default function Hero() {
               )}
             </div>
 
-            {/* Field 3: Travelers Dropdown */}
+            {/* Field 3: Travelers */}
             <div className="relative">
               <div 
                 onClick={() => toggleDropdown('travelers')}
@@ -188,16 +200,16 @@ export default function Hero() {
               </div>
 
               {activeDropdown === 'travelers' && (
-                <div className="fixed lg:absolute inset-x-4 bottom-10 lg:inset-auto lg:top-full lg:left-0 lg:mt-2 lg:w-full bg-white border border-gray-100 rounded-3xl lg:rounded-2xl shadow-2xl py-4 px-3 z-50 max-h-[70vh] lg:max-h-60 overflow-y-auto">
-                  <div className="flex justify-between items-center px-2 pb-3 lg:hidden border-b border-gray-100 mb-2">
-                    <span className="font-bold text-xs text-gray-400 uppercase tracking-wider">Select Travelers</span>
-                    <X className="w-5 h-5 text-gray-500 cursor-pointer" onClick={() => setActiveDropdown(null)} />
+                <div className="fixed inset-x-0 bottom-0 lg:absolute lg:inset-auto lg:top-full lg:left-0 lg:mt-2 lg:w-full bg-white border-t lg:border border-gray-100 rounded-t-[30px] lg:rounded-2xl shadow-2xl py-6 px-4 z-50 max-h-[60vh] lg:max-h-60 overflow-y-auto">
+                  <div className="flex justify-between items-center pb-3 mb-2 lg:hidden border-b border-gray-100">
+                    <span className="font-bold text-xs text-gray-500 uppercase tracking-wider">Select Travelers</span>
+                    <button onClick={() => setActiveDropdown(null)} className="p-1 rounded-full bg-gray-100"><X className="w-5 h-5 text-gray-600" /></button>
                   </div>
                   {travelerOptions.map((item) => (
                     <div
                       key={item}
                       onClick={() => { setTravelers(item); setActiveDropdown(null); }}
-                      className="px-4 py-3 lg:py-2.5 text-sm lg:text-xs sm:text-sm hover:bg-blue-50 hover:text-blue-600 cursor-pointer flex items-center justify-between rounded-xl transition"
+                      className="px-4 py-3.5 lg:py-2.5 text-sm hover:bg-blue-50 hover:text-blue-600 cursor-pointer flex items-center justify-between rounded-xl transition"
                     >
                       <span>{item}</span>
                       {travelers === item && <Check className="w-4 h-4 text-blue-600" />}
@@ -207,7 +219,7 @@ export default function Hero() {
               )}
             </div>
 
-            {/* Field 4: Travel Style Dropdown */}
+            {/* Field 4: Travel Style */}
             <div className="relative">
               <div 
                 onClick={() => toggleDropdown('style')}
@@ -223,16 +235,16 @@ export default function Hero() {
               </div>
 
               {activeDropdown === 'style' && (
-                <div className="fixed lg:absolute inset-x-4 bottom-10 lg:inset-auto lg:top-full lg:left-0 lg:mt-2 lg:w-full bg-white border border-gray-100 rounded-3xl lg:rounded-2xl shadow-2xl py-4 px-3 z-50 max-h-[70vh] lg:max-h-60 overflow-y-auto">
-                  <div className="flex justify-between items-center px-2 pb-3 lg:hidden border-b border-gray-100 mb-2">
-                    <span className="font-bold text-xs text-gray-400 uppercase tracking-wider">Select Travel Style</span>
-                    <X className="w-5 h-5 text-gray-500 cursor-pointer" onClick={() => setActiveDropdown(null)} />
+                <div className="fixed inset-x-0 bottom-0 lg:absolute lg:inset-auto lg:top-full lg:left-0 lg:mt-2 lg:w-full bg-white border-t lg:border border-gray-100 rounded-t-[30px] lg:rounded-2xl shadow-2xl py-6 px-4 z-50 max-h-[60vh] lg:max-h-60 overflow-y-auto">
+                  <div className="flex justify-between items-center pb-3 mb-2 lg:hidden border-b border-gray-100">
+                    <span className="font-bold text-xs text-gray-500 uppercase tracking-wider">Select Travel Style</span>
+                    <button onClick={() => setActiveDropdown(null)} className="p-1 rounded-full bg-gray-100"><X className="w-5 h-5 text-gray-600" /></button>
                   </div>
                   {travelStyles.map((item) => (
                     <div
                       key={item}
                       onClick={() => { setStyle(item); setActiveDropdown(null); }}
-                      className="px-4 py-3 lg:py-2.5 text-sm lg:text-xs sm:text-sm hover:bg-blue-50 hover:text-blue-600 cursor-pointer flex items-center justify-between rounded-xl transition"
+                      className="px-4 py-3.5 lg:py-2.5 text-sm hover:bg-blue-50 hover:text-blue-600 cursor-pointer flex items-center justify-between rounded-xl transition"
                     >
                       <span>{item}</span>
                       {style === item && <Check className="w-4 h-4 text-blue-600" />}
@@ -242,13 +254,21 @@ export default function Hero() {
               )}
             </div>
 
-            {/* Explore Button */}
+            {/* Explore Button with Loading State */}
             <div className="h-full flex items-center">
               <button 
-                onClick={() => alert(`Searching trips for: ${destination}, ${month}, ${travelers}, ${style}`)}
-                className="w-full h-12 sm:h-full bg-[#1b73e8] hover:bg-blue-600 text-white font-semibold px-6 py-3.5 sm:py-4 rounded-2xl transition-all shadow-md shadow-blue-500/20 flex items-center justify-center gap-2 text-sm sm:text-base cursor-pointer"
+                onClick={handleSearch}
+                disabled={loading}
+                className="w-full h-12 sm:h-full bg-[#1b73e8] hover:bg-blue-600 text-white font-semibold px-6 py-3.5 sm:py-4 rounded-2xl transition-all shadow-md shadow-blue-500/20 flex items-center justify-center gap-2 text-sm sm:text-base cursor-pointer disabled:opacity-70"
               >
-                Explore Trips <ArrowUpRight className="w-4 h-4" />
+                {loading ? (
+                  <>
+                    <span className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin"></span>
+                    Finding Trips...
+                  </>
+                ) : (
+                  <>Explore Trips <ArrowUpRight className="w-4 h-4" /></>
+                )}
               </button>
             </div>
 

@@ -13,7 +13,6 @@ export default function Footer() {
           {/* Column 1: Brand Info with Image Logo */}
           <div className="lg:col-span-2 flex flex-col items-start">
             <Link href="/" className="flex items-center gap-2 mb-4">
-              {/* Apni logo image ko 'public' folder me rakh kar yahan path de dein, e.g., /logo.png */}
               <Image 
                 src="/logo.png" 
                 alt="Dreamdesty Logo" 
@@ -33,10 +32,10 @@ export default function Footer() {
               Explore India
             </h4>
             <ul className="space-y-3 text-sm font-light text-gray-400">
-              <li><Link href="#destinations" className="hover:text-amber-400 transition">Destinations</Link></li>
-              <li><Link href="#tours" className="hover:text-amber-400 transition">Tour Packages</Link></li>
-              <li><Link href="#experiences" className="hover:text-amber-400 transition">Travel Experiences</Link></li>
-              <li><Link href="#approach" className="hover:text-amber-400 transition">Our Approach</Link></li>
+              <li><Link href="/destinations" className="hover:text-amber-400 transition">Destinations</Link></li>
+              <li><Link href="/tours" className="hover:text-amber-400 transition">Tour Packages</Link></li>
+              <li><Link href="/experiences" className="hover:text-amber-400 transition">Travel Experiences</Link></li>
+              <li><Link href="/about" className="hover:text-amber-400 transition">Our Approach</Link></li>
             </ul>
           </div>
 
@@ -46,10 +45,10 @@ export default function Footer() {
               Popular Regions
             </h4>
             <ul className="space-y-3 text-sm font-light text-gray-400">
-              <li><Link href="#kashmir" className="hover:text-amber-400 transition">Kashmir</Link></li>
-              <li><Link href="#kerala" className="hover:text-amber-400 transition">Kerala</Link></li>
-              <li><Link href="#rajasthan" className="hover:text-amber-400 transition">Rajasthan</Link></li>
-              <li><Link href="#andaman" className="hover:text-amber-400 transition">Andaman Islands</Link></li>
+              <li><Link href="/tours/kashmir" className="hover:text-amber-400 transition">Kashmir</Link></li>
+              <li><Link href="/tours/kerala" className="hover:text-amber-400 transition">Kerala</Link></li>
+              <li><Link href="/tours/rajasthan" className="hover:text-amber-400 transition">Rajasthan</Link></li>
+              <li><Link href="/destinations" className="hover:text-amber-400 transition">Andaman Islands</Link></li>
             </ul>
           </div>
 
@@ -62,7 +61,7 @@ export default function Footer() {
               Have a destination in mind? Let&apos;s talk about your next India holiday.
             </p>
             <Link 
-              href="#enquire" 
+              href="/contact" 
               className="bg-amber-400 hover:bg-amber-300 text-gray-950 font-semibold px-6 py-3.5 rounded-xl transition-all shadow-lg shadow-amber-400/20 flex items-center gap-2 text-sm mb-4 cursor-pointer"
             >
               Enquire Now <ArrowUpRight className="w-4 h-4" />

@@ -41,17 +41,17 @@ export default function Navbar() {
 
           {/* Desktop Navigation Links */}
           <nav className="hidden lg:flex items-center gap-8 text-sm font-semibold text-blue-950">
-            <Link href="#destinations" className="hover:text-blue-600 transition-colors">Destinations</Link>
-            <Link href="#packages" className="hover:text-blue-600 transition-colors">Tour Packages</Link>
-            <Link href="#experiences" className="hover:text-blue-600 transition-colors">Experiences</Link>
-            <Link href="#why-us" className="hover:text-blue-600 transition-colors">Why Dreamdesty</Link>
-            <Link href="#contact" className="hover:text-blue-600 transition-colors">Contact</Link>
+            <Link href="/destinations" className="hover:text-blue-600 transition-colors">Destinations</Link>
+            <Link href="/tour" className="hover:text-blue-600 transition-colors">Tour Packages</Link>
+            <Link href="/experiences" className="hover:text-blue-600 transition-colors">Experiences</Link>
+            <Link href="/about" className="hover:text-blue-600 transition-colors">Why Dreamdesty</Link>
+            <Link href="/contact" className="hover:text-blue-600 transition-colors">Contact</Link>
           </nav>
 
           {/* Plan My Trip Button (Desktop) */}
           <div className="hidden lg:flex items-center">
             <Link 
-              href="#plan-trip" 
+              href="/contact" 
               className="bg-[#1b73e8] hover:bg-blue-600 text-white font-semibold px-6 py-2.5 rounded-xl transition-all shadow-md flex items-center gap-1.5 text-sm"
             >
               Plan My Trip <ArrowUpRight className="w-4 h-4" />
@@ -74,35 +74,35 @@ export default function Navbar() {
         <div className="lg:hidden bg-white border-b border-gray-200 px-6 pt-4 pb-6 space-y-4 shadow-xl relative z-50">
           <nav className="flex flex-col space-y-3 text-base font-semibold text-blue-950">
             <Link 
-              href="#destinations" 
+              href="/destinations" 
               onClick={() => setIsOpen(false)}
               className="hover:text-blue-600 transition-colors py-1 border-b border-gray-100"
             >
               Destinations
             </Link>
             <Link 
-              href="#packages" 
+              href="/tour" 
               onClick={() => setIsOpen(false)}
               className="hover:text-blue-600 transition-colors py-1 border-b border-gray-100"
             >
               Tour Packages
             </Link>
             <Link 
-              href="#experiences" 
+              href="/experiences" 
               onClick={() => setIsOpen(false)}
               className="hover:text-blue-600 transition-colors py-1 border-b border-gray-100"
             >
               Experiences
             </Link>
             <Link 
-              href="#why-us" 
+              href="/about" 
               onClick={() => setIsOpen(false)}
               className="hover:text-blue-600 transition-colors py-1 border-b border-gray-100"
             >
               Why Dreamdesty
             </Link>
             <Link 
-              href="#contact" 
+              href="/contact" 
               onClick={() => setIsOpen(false)}
               className="hover:text-blue-600 transition-colors py-1"
             >

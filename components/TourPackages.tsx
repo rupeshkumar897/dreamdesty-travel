@@ -13,7 +13,7 @@ const packagesData = [
     locations: "Srinagar • Gulmarg • Pahalgam",
     description: "Houseboat moments, alpine scenery and unforgettable Himalayan views.",
     image: "https://images.unsplash.com/photo-1595815771614-ade9d652a65d?q=80&w=800&auto=format&fit=crop",
-    link: "#kashmir"
+    link: "/tours/kashmir" // <--- Yahan hash (#) ki jagah dynamic route de dein
   },
   {
     id: 2,
@@ -24,7 +24,7 @@ const packagesData = [
     locations: "Munnar • Thekkady • Alleppey",
     description: "Misty tea gardens, lush landscapes and serene backwater cruising.",
     image: "https://images.unsplash.com/photo-1602216056096-3b40cc0c9944?q=80&w=800&auto=format&fit=crop",
-    link: "#kerala"
+    link: "/tours/kerala"
   },
   {
     id: 3,
@@ -35,7 +35,7 @@ const packagesData = [
     locations: "Jaipur • Jodhpur • Udaipur",
     description: "Palaces, colorful markets and timeless royal architecture.",
     image: "https://images.unsplash.com/photo-1599661046827-dacff0c0f09a?q=80&w=800&auto=format&fit=crop",
-    link: "#rajasthan"
+    link: "/tours/rajasthan"
   },
   {
     id: 4,
@@ -46,7 +46,7 @@ const packagesData = [
     locations: "North Goa • South Goa",
     description: "Coastal sunsets, charming lanes and an easygoing holiday mood.",
     image: "https://images.unsplash.com/photo-1512343879784-a960bf40e7f2?q=80&w=800&auto=format&fit=crop",
-    link: "#goa"
+    link: "/tours/goa"
   },
   {
     id: 5,
@@ -57,7 +57,7 @@ const packagesData = [
     locations: "Shimla • Manali • Solang",
     description: "Mountain air, pine valleys and scenic Himalayan roads.",
     image: "https://images.unsplash.com/photo-1626621341517-bbf3d9990a23?q=80&w=800&auto=format&fit=crop",
-    link: "#himachal"
+    link: "/tours/himachal"
   },
   {
     id: 6,
@@ -68,7 +68,7 @@ const packagesData = [
     locations: "Port Blair • Havelock • Neil",
     description: "Turquoise coastlines, beach days and tropical island bliss.",
     image: "https://images.unsplash.com/photo-1589182373726-e4f658ab50f0?q=80&w=800&auto=format&fit=crop",
-    link: "#andaman"
+    link: "/tours/andaman"
   },
   {
     id: 7,
@@ -79,7 +79,7 @@ const packagesData = [
     locations: "Varanasi • Agra • Delhi",
     description: "Ancient ghats, evening aartis and the timeless Taj Mahal.",
     image: "https://images.unsplash.com/photo-1561359313-0639aad49ff6?q=80&w=800&auto=format&fit=crop",
-    link: "#varanasi"
+    link: "/tours/varanasi"
   },
   {
     id: 8,
@@ -90,7 +90,7 @@ const packagesData = [
     locations: "Leh • Nubra • Pangong",
     description: "High mountain passes, crystal clear lakes and starry desert nights.",
     image: "https://images.unsplash.com/photo-1581793745862-99fde7bb73d2?q=80&w=800&auto=format&fit=crop",
-    link: "#ladakh"
+    link: "/tours/ladakh"
   }
 ];
 
